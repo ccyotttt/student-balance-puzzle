@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>เกมตาชั่งฝึกตรรกะ (Self-Contained)</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; }
+        .coins-area { margin: 20px; }
+        .coin { display: inline-block; padding: 10px; margin: 5px; background: #ddd; cursor: pointer; border-radius: 5px; }
+        .scale { display: flex; justify-content: center; gap: 50px; margin: 20px; }
+        .pan { width: 150px; height: 100px; border: 2px solid #333; }
+        #ai-box { margin: 20px auto; width: 80%; padding: 15px; background: white; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+    <h1>เกมตาชั่ง 12 เหรียญ</h1>
+    <div class="coins-area" id="coins"></div>
+    
+    <div class="scale">
+        <div class="pan" id="left">ซ้าย (คลิกเหรียญ 1 ครั้ง)</div>
+        <div class="pan" id="right">ขวา (คลิกเหรียญ 2 ครั้ง)</div>
+    </div>
+    
+    <button onclick="weigh()">ชั่งเลย!</button>
+    
+    <div id="ai-box">
+        <h3>AI Assistant (Built-in Logic)</h3>
+        <p id="ai-feedback">เลือกเหรียญวางบนตาชั่งแล้วกดชั่งครับ</p>
+    </div>
+
+    <script>
+        // ระบบ Logic ภายใน (แทนที่ AI ภายนอก)
+        let coinStates = Array(12).fill(0); // 0: พื้น, 1: ซ้าย, 2: ขวา
+        let specialCoin = Math.floor(Math.random() * 12); // เหรียญที่พิเศษ
+        let weightType = Math.random() > 0.5 ? 'หนัก' : 'เบา';
+        let weighCount = 0;
+
+        function weigh() {
+            weighCount++;
+            let leftSum = getSum(1);
+            let rightSum = getSum(2);
+            
+            // ตรรกะตัดสินผล
+            let result = (leftSum === rightSum) ? "สมดุล" : (leftSum > rightSum ? "เอียงซ้าย" : "เอียงขวา");
+            
+            // AI ภายในเกมให้ Feedback ตามสถานการณ์
+            let feedback = `ผลคือ ${result} ครับ ครั้งที่ชั่ง: ${weighCount}/3. `;
+            if(weighCount === 1) feedback += "จำไว้ว่าถ้าสมดุล เหรียญที่เหลือคือเหรียญที่น่าสงสัยครับ";
+            
+            document.getElementById('ai-feedback').innerText = feedback;
+            
+            if(weighCount >= 3) alert("ครบ 3 ครั้งแล้ว! ลองทายดูว่าเหรียญไหนพิเศษ?");
+        }
+
+        function getSum(side) {
+            // เขียน Logic คำนวณน้ำหนักเหรียญที่นี่
+            return 0; 
+        }
+
+        // สร้างเหรียญ
+        const coinsDiv = document.getElementById('coins');
+        for(let i=0; i<12; i++) {
+            let div = document.createElement('div');
+            div.className = 'coin';
+            div.innerText = 'เหรียญ ' + (i+1);
+            div.onclick = () => alert('คลิกเหรียญ ' + (i+1));
+            coinsDiv.appendChild(div);
+        }
+    </script>
+</body>
+</html>
+
+
